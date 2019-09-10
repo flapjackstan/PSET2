@@ -1,0 +1,83 @@
+---
+title: "Problem Set 1"
+author: "Elmer Camargo + Nick Trella"
+subtitle: MGSC 310, Fall 2019, Professor Hersh
+output:
+  pdf_document: default
+  html_notebook: default
+  html_document:
+    df_print: paged
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+# change to your own working directory
+
+knitr::opts_knit$set(root.dir = 'C:/Users/Elmer/Documents/R/Statistical Modeling/PSET1/imdb_dataset')
+
+setwd('C:/Users/Elmer/Documents/R/Statistical Modeling/PSET1/imdb_dataset')
+
+# set seed to your own favorite number
+set.seed(1818)
+options(width=70)
+
+# general rchunk code options
+opts_chunk$set(tidy.opts=list(width.wrap=50),tidy=TRUE, size = "vsmall")
+opts_chunk$set(message = FALSE,
+               warning = FALSE,
+               cache = TRUE,
+               autodep = TRUE,
+               cache.comments = FALSE,
+               collapse = TRUE,
+               fig.width = 5,  
+               fig.height = 4,
+               fig.align='center')
+
+
+```
+
+##Libraries Needed
+```{r}
+library("tidyverse")
+library("ggplot2") 
+library("ggthemes")
+library('ggridges')
+```
+
+## Question 1 (Getting and Setting Working Directories)
+
+```{r}
+getwd()
+setwd("C:/Users/Elmer/Documents/R/Statistical Modeling/PSET1/imdb_dataset")
+```
+
+## Question 2 (Reading CSV Files)
+
+
+```{r}
+imdb = read.csv("movie_metadata.csv")
+```
+
+## Question 3 (Dimensions)
+
+```{r}
+dim(imdb)
+```
+
+## Question 4
+
+When you are done with your RMarkdown file, you can create an output file by clicking the button "Knit" above. You have three output options, HTML, PDF, and Word. Word output is fine. If you want to produce PDF files you need to first [install Miktex](https://miktex.org/download) a popular Latex framework. (Latex is a mathematical programming language.) 
+
+![Oh yea, this is how you include images. This is the image caption](C:/Users/Elmer/Pictures/Git Cheat Sheet.png)
+
+## Advanced stuff
+
+Some more tutorials are recommended if you really want to produce cool documents:
+
+* [https://rmarkdown.rstudio.com/authoring_basics.html](https://rmarkdown.rstudio.com/authoring_basics.html
+* [https://ourcodingclub.github.io/2016/11/24/rmarkdown-1.html](https://ourcodingclub.github.io/2016/11/24/rmarkdown-1.html)
+* [https://rmarkdown.rstudio.com/lesson-1.html](https://rmarkdown.rstudio.com/lesson-1.html)
+* [https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
+
+You can do $latex$ math by using "$" as in $Y = X\beta + \epsilon$  
