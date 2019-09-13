@@ -1,5 +1,5 @@
 ---
-title: "Problem Set 1"
+title: "Problem Set 2"
 author: "Elmer Camargo + Nick Trella"
 subtitle: MGSC 310, Fall 2019, Professor Hersh
 output:
@@ -14,9 +14,11 @@ output:
 library(knitr)
 # change to your own working directory
 
-knitr::opts_knit$set(root.dir = 'C:/Users/Elmer/Documents/R/Statistical Modeling/PSET1/imdb_dataset')
+knitr::opts_knit$set(root.dir = "C:/Users/Elmer/Documents/R/Statistical Modeling/PSET2")
 
-setwd('C:/Users/Elmer/Documents/R/Statistical Modeling/PSET1/imdb_dataset')
+
+
+setwd("C:/Users/Elmer/Documents/R/Statistical Modeling/PSET2")
 
 # set seed to your own favorite number
 set.seed(1818)
@@ -37,47 +39,160 @@ opts_chunk$set(message = FALSE,
 
 ```
 
-##Libraries Needed
+## Libraries Needed
 ```{r}
 library("tidyverse")
 library("ggplot2") 
-library("ggthemes")
-library('ggridges')
 ```
 
-## Question 1 (Getting and Setting Working Directories)
+## Question 1 ISLR Ch.2 Q.2
+
+A. Regression. n(sample) = whatever subset we pick, p(predictors) = the vars
+
+B. Classification. n = 20 similair products, p = success, failure, price, mark      budget, comp price, and 10 other vars
+
+C. Regression because output is expected to be a percentage (aka continuous data)
+   Prediction because we are forcasting future percentage change
+   (n = 52, p = % change in [USD/Euro, US Market, British Market, German Market])
+
+## Question 2 ISLR Ch.2 Q.4
+   
+A. 
+
+    Classifying whether an image contains a face or not
+    Response: yes or no     
+    Predictors: nose, eyes, jaw, etc...
+    Applicational Goal: Predictive because images are being categorized
+   
+    Classifying whether or not to give someone 1 of 3 loan
+    Response: small, medium, large     
+    Predictors: income, networth, credit history, etc...
+    Applicational Goal: Prediction because  
+   
+    Classifying whether someone will return to a 
+    Response: yes or no     Predictors: nose, eyes, jaw, etc...
+    Applicational Goal: Predictive because images are being categorized
+   
+B. 
+  
+    Using a regression model to predict the path of a vehicle
+    Response: Angles in degrees      
+    Predictors: Speed, angle of tires
+    Applicational Goal: Predictive because 
+   
+    Using a regression model to 
+    Response:      
+    Predictors: 
+    Applicational Goal: Inferential because 
+   
+    Using a regression model to 
+    Response:      
+    Predictors: 
+    Applicational Goal: Predictive because 
+
+C. 
+   
+    Using cluster analysis to group businesses together by what they sell
+    Using cluster analysis to group 
+    Using cluster analysis to group businesses together by what they sell
+
+## Question 3a-b Plotting IMDB’s Top 5000 Movies
 
 ```{r}
-getwd()
-setwd("C:/Users/Elmer/Documents/R/Statistical Modeling/PSET1/imdb_dataset")
+movies <-read.csv("data/movie_metadata.csv")
+
+movies <- movies %>% filter(budget<4e+08) #get rid of anomolies
+
+movies <- movies %>% mutate(genre_main = unlist(map(strsplit(as.character(movies$genres),
+"\\|"), 1)), grossM = gross/1e+06,
+             budgetM = budget/1e+06)
+
+movies <- movies %>% mutate(genre_main = factor(genre_main)%>%
+                            fct_drop())
 ```
 
-## Question 2 (Reading CSV Files)
-
+## Question 3c Profit and ROI
 
 ```{r}
-imdb = read.csv("movie_metadata.csv")
+movies <- movies %>% 
+  mutate(profitM = grossM - budgetM,
+         ROI = profitM / budgetM)
 ```
 
-## Question 3 (Dimensions)
+## Question 3d Average ROI Plot
 
 ```{r}
-dim(imdb)
+sum(is.na(movies$ROI))
+movies <- movies %>% drop_na(ROI) #omits NA values in a column 
+sum(is.na(movies$ROI))
+
+cat('average ROI is', mean(movies$ROI))
+
+hgp1<-ggplot(movies, aes(x=ROI)) + 
+  geom_histogram(color="black", fill="white", binwidth = 500)
+
 ```
 
-## Question 4
+![Something is a bit off](output/histogram1.png)
 
-When you are done with your RMarkdown file, you can create an output file by clicking the button "Knit" above. You have three output options, HTML, PDF, and Word. Word output is fine. If you want to produce PDF files you need to first [install Miktex](https://miktex.org/download) a popular Latex framework. (Latex is a mathematical programming language.) 
+\newpage
 
-![Oh yea, this is how you include images. This is the image caption](C:/Users/Elmer/Pictures/Git Cheat Sheet.png)
+## Question 3e Outliers and Filtering
 
-## Advanced stuff
+```{r}
+count(movies, vars = ROI > 10)
 
-Some more tutorials are recommended if you really want to produce cool documents:
+movies_filt <- movies %>% filter(ROI < 10) #we want/keep everything < 10 
 
-* [https://rmarkdown.rstudio.com/authoring_basics.html](https://rmarkdown.rstudio.com/authoring_basics.html
-* [https://ourcodingclub.github.io/2016/11/24/rmarkdown-1.html](https://ourcodingclub.github.io/2016/11/24/rmarkdown-1.html)
-* [https://rmarkdown.rstudio.com/lesson-1.html](https://rmarkdown.rstudio.com/lesson-1.html)
-* [https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
+count(movies_filt, vars = ROI > 10)
 
-You can do $latex$ math by using "$" as in $Y = X\beta + \epsilon$  
+hp2 <- ggplot(data = movies_filt, aes(ROI))+
+  geom_histogram(color="black", fill="white", binwidth = 1)
+```
+
+![Way better](output/histogram2.png)
+
+\newpage
+
+## Question 3f Grouping and Summarizing
+
+```{r}
+average_roi_bycat <- movies_filt %>% 
+  group_by(genre_main) %>% 
+  summarize(mean(ROI))
+
+average_roi_bycat
+
+cat("Top 3 Genres: Musical, Western, and Thriller")
+```
+
+## Question 3g 
+
+```{r}
+genre_meanROI <- average_roi_bycat$`mean(ROI)`
+genre <- average_roi_bycat$genre_main
+
+sp1 <- ggplot( data = average_roi_bycat)+ 
+  geom_point(mapping = aes(x = genre, y = genre_meanROI)) +
+  labs(x= "Genre",
+       y= "Average(ROI)",
+       title= "Average ROI by Genre")
+```
+![An interesting result](output/scatterplot1.png)
+## Question 3h
+
+```{r}
+
+```
+
+## Question 3i
+
+```{r}
+
+```
+
+## Question 3j
+
+```{r}
+
+```

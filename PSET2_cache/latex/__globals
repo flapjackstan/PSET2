@@ -1,0 +1,12 @@
+unnamed-chunk-1	library
+unnamed-chunk-2	$	%>%	<	as.character	budget	factor	fct_drop	filter	genre_main	gross	map	mutate	read.csv	strsplit	unlist
+unnamed-chunk-3	%>%	budgetM	grossM	mutate	profitM
+unnamed-chunk-4	$	%>%	aes	cat	drop_na	geom_histogram	ggplot	is.na	mean	ROI	sum
+unnamed-chunk-5	%>%	<	>	aes	count	filter	geom_histogram	ggplot	movies	ROI
+unnamed-chunk-6	%>%	cat	genre_main	group_by	mean	movies_filt	ROI	summarize
+unnamed-chunk-7	$	aes	average_roi_bycat	geom_point	ggplot	labs
+unnamed-chunk-8	
+unnamed-chunk-9	
+unnamed-chunk-10	
+unnamed-chunk-11	
+unnamed-chunk-12	
