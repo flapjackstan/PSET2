@@ -56,45 +56,41 @@ C. Regression because output is expected to be a percentage (aka continuous data
    (n = 52, p = % change in [USD/Euro, US Market, British Market, German Market])
 
 ## Question 2 ISLR Ch.2 Q.4
-   
-A. 
 
-    Classifying whether an image contains a face or not
-    Response: yes or no     
-    Predictors: nose, eyes, jaw, etc...
-    Applicational Goal: Predictive because images are being categorized
+A. 
+Classifying faces on images, Response: yes or no, Predictors: nose, eyes, jaw, etc...
+Applicational Goal: Predictive because objects on the images are being categorized
    
-    Classifying whether or not to give someone 1 of 3 loan
-    Response: small, medium, large     
-    Predictors: income, networth, credit history, etc...
-    Applicational Goal: Prediction because  
+Classifying whether or not to give someone 1 of 3 loan, Response: small, medium, large     
+Predictors: income, networth, credit history, etc...
+Applicational Goal: Prediction because output is being categorized into 3 types of loans 
    
-    Classifying whether someone will return to a 
-    Response: yes or no     Predictors: nose, eyes, jaw, etc...
-    Applicational Goal: Predictive because images are being categorized
+Classifying whether someone is a male or female based on previous purchases
+Response: male or female     
+Predictors: types of purchases, stores of purchases
+Applicational Goal: Inference because you are exploring the relationship of previous purchases 
    
 B. 
-  
-    Using a regression model to predict the path of a vehicle
-    Response: Angles in degrees      
-    Predictors: Speed, angle of tires
-    Applicational Goal: Predictive because 
+Using a regression model to examine the relationship of marijuana dispensaries and crime in a location
+Response: Reported crimes in a given location
+Predictors: Marijuana dispensary locations, historical crime reports in locations 
+Applicational Goal: Inference because you are exploring the relationship between crime and  marijuana dispensary within a specified location 
+
+
+Using a regression model to predict a sports teams number of points in a game
+Response: Points in a game
+Predictors: Individual player points per game average, defensive stats of the oponent 
+Applicational Goal: Predictive because you are estimating 
    
-    Using a regression model to 
-    Response:      
-    Predictors: 
-    Applicational Goal: Inferential because 
-   
-    Using a regression model to 
-    Response:      
-    Predictors: 
-    Applicational Goal: Predictive because 
+Using a regression model to predict percent change in a stock 
+Response: Predicted percent change stock
+Predictors: Previous percent change of stock, media coverage
+Applicational Goal: Predictive because you are estimating a future variable
 
 C. 
-   
-    Using cluster analysis to group businesses together by what they sell
-    Using cluster analysis to group 
-    Using cluster analysis to group businesses together by what they sell
+Using cluster analysis to group businesses together by what they sell
+Using cluster analysis to group people by income
+Using cluster analysis to group people interests/facebook likes
 
 ## Question 3a-b Plotting IMDB’s Top 5000 Movies
 
@@ -133,7 +129,7 @@ hgp1<-ggplot(movies, aes(x=ROI)) +
 
 ```
 
-![Something is a bit off](output/histogram1.png)
+![](output/histogram1.png)
 
 \newpage
 
@@ -150,7 +146,7 @@ hp2 <- ggplot(data = movies_filt, aes(ROI))+
   geom_histogram(color="black", fill="white", binwidth = 1)
 ```
 
-![Way better](output/histogram2.png)
+![](output/histogram2.png)
 
 \newpage
 
@@ -178,21 +174,63 @@ sp1 <- ggplot( data = average_roi_bycat)+
        y= "Average(ROI)",
        title= "Average ROI by Genre")
 ```
-![An interesting result](output/scatterplot1.png)
+
+
+![](output/scatterplot1.png)
+\newpage
+
 ## Question 3h
 
 ```{r}
+test3 <- group_by(movies_filt,actor_1_name)
 
+df2 <- summarise(test3,mean(ROI),mean(profitM),num_films = n())
+x2 <- df2$`mean(ROI)`
+df2 <- df2 %>% arrange(desc(x2))
+
+
+df2 <- df2 %>% slice(1:20)
+
+df2
 ```
 
 ## Question 3i
 
 ```{r}
+df3 <- summarise(test3,mean(ROI))
+y3 <- df3$actor_1_name
+x3 <- df3$`mean(ROI)`
+df3 <- df3 %>% arrange(desc(x3))
+df3 <- df3 %>% slice(1:30)
+y3 <- df3$actor_1_name
+x3 <- df3$`mean(ROI)`
+df3
 
+sp2 <- ggplot(df3 = df3 %>% top_n(30, wt = x3), 
+              mapping = aes(x = x3, y = reorder(y3, x3)))+
+              geom_point()
 ```
 
+\newpage
+
+![scatterplot 2](output/scatterplot2.png)
+\newpage
 ## Question 3j
 
 ```{r}
+df4 <- summarise(test3,mean(ROI))
+y4 <- df4$actor_1_name
+x4 <- df4$`mean(ROI)`
+df4 <- df4 %>% arrange((x4))
+df4 <- df4 %>% slice(30:1)
+y4 <- df4$actor_1_name
+x4 <- df4$`mean(ROI)`
 
+sp3 <- ggplot(df4 = df4 %>% top_n(30, wt = x4),
+              mapping = aes(x = x4, y = reorder(y4, x4)))+
+              geom_point()
 ```
+
+\newpage
+
+![scatterplot 3](output/scatterplot3.png)

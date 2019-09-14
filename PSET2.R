@@ -71,11 +71,54 @@ sp1 <- ggplot( data = average_roi_bycat)+
 ggsave("output/scatterplot1.png", width = 10, height = 8)
 
 #h
+test3 <- group_by(movies_filt,actor_1_name)
 
-movies_filt <- group_by(movies_filt, actor_1_name)
-actors_and_mean_roi <- summarize(movies_filt, mean(ROI), profitM)
-actor_meanROI <- actors_and_mean_roi$`mean(ROI)`
-act_and_roi_slice <- actors_and_mean_roi %>% arrange(desc(actor_meanROI)) %>%
-                                             slice(1:20)  
-                                        
-act_and_roi_slice
+df2 <- summarise(test3,mean(ROI),mean(profitM),num_films = n())
+x2 <- df2$`mean(ROI)`
+df2 <- df2 %>% arrange(desc(x2))
+
+
+df2 <- df2 %>% slice(1:20)
+
+df2
+
+#i
+
+
+df3 <- summarise(test3,mean(ROI))
+y3 <- df3$actor_1_name
+x3 <- df3$`mean(ROI)`
+df3 <- df3 %>% arrange(desc(x3))
+df3 <- df3 %>% slice(1:30)
+y3 <- df3$actor_1_name
+x3 <- df3$`mean(ROI)`
+df3
+
+ggplot(df3 = df3 %>% top_n(30, wt = x3),
+       mapping = aes(x = x3, y = reorder(y3, x3)))+
+       geom_point()+
+       labs(x= "ROI",
+            y= "Actors",
+            title= "Top 30 Actors by ROI")
+ggsave("output/scatterplot2.png", width = 8, height = 8)
+
+
+
+#j
+
+df4 <- summarise(test3,mean(ROI))
+y4 <- df4$actor_1_name
+x4 <- df4$`mean(ROI)`
+df4 <- df4 %>% arrange((x4))
+df4 <- df4 %>% slice(30:1)
+y4 <- df4$actor_1_name
+x4 <- df4$`mean(ROI)`
+df4
+
+ggplot(df4 = df4 %>% top_n(30, wt = x4), 
+       mapping = aes(x = x4, y = reorder(y4, x4)))+
+       geom_point()+
+       labs(x= "ROI",
+            y= "Actors",
+            title= "Lowest 30 Actors by ROI")
+ggsave("output/scatterplot3.png", width = 8, height = 8)

@@ -5,8 +5,8 @@ unnamed-chunk-4	$	%>%	aes	cat	drop_na	geom_histogram	ggplot	is.na	mean	ROI	sum
 unnamed-chunk-5	%>%	<	>	aes	count	filter	geom_histogram	ggplot	movies	ROI
 unnamed-chunk-6	%>%	cat	genre_main	group_by	mean	movies_filt	ROI	summarize
 unnamed-chunk-7	$	aes	average_roi_bycat	geom_point	ggplot	labs
-unnamed-chunk-8	
-unnamed-chunk-9	
-unnamed-chunk-10	
+unnamed-chunk-8	$	%>%	actor_1_name	arrange	desc	group_by	mean	movies_filt	n	profitM	ROI	slice	summarise
+unnamed-chunk-9	$	%>%	aes	arrange	desc	geom_point	ggplot	mean	reorder	ROI	slice	summarise	test3	top_n
+unnamed-chunk-10	$	%>%	aes	arrange	geom_point	ggplot	mean	reorder	ROI	slice	summarise	test3	top_n
 unnamed-chunk-11	
 unnamed-chunk-12	
